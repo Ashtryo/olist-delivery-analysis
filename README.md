@@ -21,7 +21,7 @@ This project looks at **99,441 real orders** from **Olist**, Brazil's largest on
 ## Project Workflow
 
 ### 1. Data Cleaning & Preparation (Python)
-The raw Olist data comes as 8 separate CSV files (`orders`, `order_items`, `payments`, `reviews`, `customers`, `products`, `sellers`, and `category_translation`). Before running any analysis, the data was cleaned in Python (`pandas` and `numpy`):
+The raw Olist data comes as 8 separate CSV files (`orders`, `order_items`, `payments`, `reviews`, `customers`, `products`, `sellers`, and `product_category_name_translation`). Before running any analysis, the data was cleaned in Python (`pandas` and `numpy`):
 
 - **Converted dates properly:** Turned text timestamps into real date formats so delivery times could be calculated accurately.
 - **Flagged orders instead of deleting them:** Rather than deleting rows and losing track of what was removed, simple `1/0` flag columns were added:
@@ -45,15 +45,15 @@ Using the cleaned database (`in_delay_analysis = 1`), the SQL script (`olist bus
 2. **Impact on Review Scores:** Do late orders get lower review scores than on-time orders, and how much does the share of 1-star reviews jump?
 3. **Monthly Trends & Seasonality:** How do order volume, late delivery rates, and average delivery times change month by month?
 4. **State-by-State Performance:** Which customer states experience the highest late delivery rates, and how do customers in those states rate their orders?
-5. **Delay Severity Buckets:** How badly do review scores drop as delays get longer (`On time`, `1–3 days late`, `4–7 days late`, vs. `8+ days late`)?
-6. **1-Star Review Breakdown:** Among all 1-star reviews, what percentage came from orders that were delivered late?
+5. **Delay Severity Buckets:** How badly do review scores drop as delays get longer (`on_time`, `1-3 days late`, `4-7 days late`, vs. `8+ days late`)?
+6. **1-Star Review Breakdown:** Among all 1-star reviews, what percentage belong to orders that were delivered late?
 7. **Seller vs. Carrier Bottlenecks:** When an order is late, which part of the journey takes longer—the seller preparing the parcel or the carrier delivering it?
 8. **Problem Product Categories:** Which product categories have the highest late delivery rates (looking at categories with at least 300 orders)?
 
 ---
 
 ### 3. Interactive Dashboard (Power BI)
-The cleaned data is connected to Power BI to visualize:
+The cleaned data is connected to Power BI (`olist_dashboard.pbix`) to visualize:
 - Overall delivery KPIs (total orders, late rate, average delivery time, and review score).
 - Customer satisfaction comparisons between on-time and delayed orders across delay buckets.
 - Monthly order trends and seasonal spikes in late deliveries.
@@ -71,7 +71,7 @@ The cleaned data is connected to Power BI to visualize:
 ## Files in This Repository
 - `Olist_Delivery_Delays_Data_Cleaning.ipynb` — Jupyter Notebook with the full Python cleaning and preparation steps.
 - `olist business questions.sql` — SQL queries answering the 8 business questions.
-- Power BI Dashboard (`.pbix`) — Interactive dashboard built on the cleaned data.
+- `olist_dashboard.pbix` — Interactive Power BI dashboard built on the cleaned data.
 - Raw Olist CSV files — Source datasets used by the notebook.
 
 ---
@@ -79,10 +79,8 @@ The cleaned data is connected to Power BI to visualize:
 ## How to Run This Project
 
 1. **Clone or download this repository** to your computer.
-2. **Install the required Python libraries:**
-   ```bash
-   pip install pandas numpy sqlalchemy pymysql
-3. In MySQL, create an empty database: `CREATE DATABASE olist_db;`
-4. Run the notebook from top to bottom. It cleans the data and saves it to the database. It will ask for your MySQL password.
-5. Run the queries in the SQL file.
-6. Open the dashboard file in Power BI Desktop. It already contains the data, so it opens without MySQL.
+2. **Install the required Python libraries:** `pip install pandas numpy sqlalchemy pymysql`
+3. **In MySQL, create an empty database:** `CREATE DATABASE olist_db;`
+4. **Run the notebook from top to bottom.** It cleans the data and saves it to the database. It will ask for your MySQL password.
+5. **Run the queries** in the SQL file (`olist business questions.sql`).
+6. **Open the dashboard file (`olist_dashboard.pbix`) in Power BI Desktop.** It already contains the data, so it opens without MySQL.
